@@ -8,7 +8,7 @@ title: Animation Baker — User Guide
 
 Animation Baker is an Unreal Editor tool that **imports motion from a reference video or an existing animation → applies it to your character → lets you sculpt poses frame by frame → exports Animation Sequences, Montages or SpriteBaker projects**. It is an editor-only plugin; nothing is added to your packaged game.
 
-> The editor UI is currently in Korean. This guide names each control with its on-screen Korean label in parentheses.
+> The editor UI is in English by default. To use Korean, pick **한국어** in the language menu at the right of the top toolbar. Labels in parentheses are the Korean-mode labels.
 
 ---
 
@@ -61,6 +61,12 @@ Output is 30 fps **in-place** motion. Re-analysing the same file/region reuses t
 
 **Shot-change check (1.0)**: if the selected range contains a cut or transition, analysis stops before inference and reports the frame. Choose a range inside one shot.
 
+**Analyse several ranges at once**: when one long video holds several moves, expand **Analyse several ranges at once** in the video window.
+- **Add current range to list** adds the start/end frames and body box selected above. The same range is never added twice.
+- **Split at shot changes** splits the whole video at every edit cut.
+- **Split where the caption changes** splits wherever an on-screen caption, such as a move name, changes. Draw a box around the caption text in the preview, click **Use current box as caption box**, draw the person's body box again, then click it. Ranges without a caption are left out, and ranges longer than 30 s are split.
+- Rename entries in the list (the name becomes the state name) and click **Analyse all in list**: every range becomes its own new state. A failed range does not stop the rest; at the end you get the done/failed counts and each range's confidence. Open a failed range with **View**, fix its range or box, click **Update**, and analyse again.
+
 ### 4.3 Review and correct
 - **Pink lines** on timeline bone rows mark confidence below 45%. **Next review frame (다음 보정 프레임 →)** jumps to the frame and bone.
 - Since 1.0, **feet gliding on the floor** are also marked pink (see 4.4).
@@ -112,6 +118,8 @@ One project asset stores **Group (character) → Motion set → State → Varian
 
 ## 7. Export
 
+Exporting a saved project with no unsaved edits also saves the export settings and montage links the export records, so closing the window or the editor right after an export does not ask to save. Unsaved edits are never saved for you.
+
 **Export all…** chooses the scope (all/group/set/state/variant), outputs (Animation Sequence, per-state Montage, SpriteBaker project), naming pattern (`{project} {group} {motion} {state} {variant}`), in-place or root motion, notify/curve inclusion, montage slot and blend times. Name collisions get a new number; sources are never overwritten.
 
 **SpriteBaker** (separate product): if a SpriteBaker version with AnimationBridge v2 is installed and enabled, a new SpriteBaker project is created and opened. Otherwise a JSON hand-off and asset list are written to `Saved/AnimationBaker/Exports`.
@@ -132,7 +140,7 @@ One project asset stores **Group (character) → Motion set → State → Varian
 - Output is **in-place**. Horizontal travel paths, individual finger/toe joints and arbitrary camera motion are not reconstructed; camera compensation only softens small zoom/pan.
 - In in-place output, feet of a travelling or weight-shifting performer may slide; such frames are flagged for review.
 - Up to 30 s per analysis, 30 fps output.
-- UI language: Korean.
+- UI language: English (default) or Korean.
 
 ## 10. Troubleshooting
 
